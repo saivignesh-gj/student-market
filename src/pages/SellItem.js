@@ -9,11 +9,21 @@ function SellItem() {
   const navigate = useNavigate();
 
   const [photoUrl, setPhotoUrl] = useState('');
+  const [uploadedBlobUrl, setUploadedBlobUrl] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
+
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedBlobUrl(URL.createObjectURL(file));
+    } else {
+      setUploadedBlobUrl('');
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -21,9 +31,12 @@ function SellItem() {
       setError('Please fill in all required fields.');
       return;
     }
+    // Uploaded file takes priority over typed URL
+    const finalPhotoUrl = uploadedBlobUrl || photoUrl;
+
     const newProduct = {
       id: Date.now(),
-      photoUrl,
+      photoUrl: finalPhotoUrl,
       title,
       price: parseFloat(price),
       category,
@@ -38,6 +51,8 @@ function SellItem() {
     navigate('/home');
   }
 
+  const previewSrc = uploadedBlobUrl || photoUrl;
+
   return (
     <div className="page-content">
       <h2 className="page-title">New Listing</h2>
@@ -50,6 +65,18 @@ function SellItem() {
           value={photoUrl}
           onChange={(e) => setPhotoUrl(e.target.value)}
         />
+
+        <label className="field-label">Or upload from device</label>
+        <input
+          className="input input-file"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+
+        {previewSrc && (
+          <img className="photo-preview" src={previewSrc} alt="Preview" />
+        )}
 
         <label className="field-label">Title *</label>
         <input

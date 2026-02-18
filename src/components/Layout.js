@@ -3,7 +3,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../App';
 
 function Layout() {
-  const { user, setUser } = useContext(AppContext);
+  const { user, setUser, theme, toggleTheme } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,6 +23,13 @@ function Layout() {
               {user.university} · {user.username}
             </span>
           )}
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? '🌞' : '🌙'}
+          </button>
           <button className="logout-btn" onClick={handleLogout}>
             Log out
           </button>
