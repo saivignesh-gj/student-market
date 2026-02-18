@@ -2,10 +2,17 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../App';
 
-const CATEGORIES = ['Furniture', 'Electronics', 'Books', 'Other'];
+// Category values are stored in English; the display label is translated in the UI
+const CATEGORY_VALUES = ['Furniture', 'Electronics', 'Books', 'Other'];
+const CATEGORY_KEYS = {
+  Furniture: 'furniture',
+  Electronics: 'electronics',
+  Books: 'books',
+  Other: 'other',
+};
 
 function SellItem() {
-  const { user, products, setProducts } = useContext(AppContext);
+  const { user, products, setProducts, t } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [photoUrl, setPhotoUrl] = useState('');
@@ -28,7 +35,7 @@ function SellItem() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!title || !price || !category || !description) {
-      setError('Please fill in all required fields.');
+      setError(t.fillRequired);
       return;
     }
     // Uploaded file takes priority over typed URL
@@ -55,18 +62,18 @@ function SellItem() {
 
   return (
     <div className="page-content">
-      <h2 className="page-title">New Listing</h2>
+      <h2 className="page-title">{t.newListing}</h2>
       <form onSubmit={handleSubmit}>
-        <label className="field-label">Photo URL</label>
+        <label className="field-label">{t.photoUrlLabel}</label>
         <input
           className="input"
           type="text"
-          placeholder="https://..."
+          placeholder={t.photoPlaceholder}
           value={photoUrl}
           onChange={(e) => setPhotoUrl(e.target.value)}
         />
 
-        <label className="field-label">Or upload from device</label>
+        <label className="field-label">{t.uploadFromDevice}</label>
         <input
           className="input input-file"
           type="file"
@@ -78,16 +85,16 @@ function SellItem() {
           <img className="photo-preview" src={previewSrc} alt="Preview" />
         )}
 
-        <label className="field-label">Title *</label>
+        <label className="field-label">{t.titleLabel} *</label>
         <input
           className="input"
           type="text"
-          placeholder="e.g. IKEA desk"
+          placeholder={t.titlePlaceholder}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <label className="field-label">Price in € *</label>
+        <label className="field-label">{t.priceLabel} *</label>
         <input
           className="input"
           type="number"
@@ -98,23 +105,25 @@ function SellItem() {
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        <label className="field-label">Category *</label>
+        <label className="field-label">{t.categoryLabel} *</label>
         <select
           className="input"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="">Select a category</option>
-          {CATEGORIES.map((c) => (
-            <option key={c} value={c}>{c}</option>
+          <option value="">{t.selectCategory}</option>
+          {CATEGORY_VALUES.map((c) => (
+            <option key={c} value={c}>
+              {t[CATEGORY_KEYS[c]]}
+            </option>
           ))}
         </select>
 
-        <label className="field-label">Description *</label>
+        <label className="field-label">{t.descriptionLabel} *</label>
         <textarea
           className="input"
           rows={4}
-          placeholder="Describe the item..."
+          placeholder={t.descPlaceholder}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -122,7 +131,7 @@ function SellItem() {
         {error && <p className="auth-error">{error}</p>}
 
         <button className="button-primary" type="submit">
-          Post listing
+          {t.postListing}
         </button>
       </form>
     </div>

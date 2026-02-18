@@ -516,3 +516,65 @@ body:has(.app-container.dark) {
 .app-container.dark .button-primary:hover {
   background-color: #1d4ed8;
 }
+
+/* ─────────────────────────────────────────
+   Language selector
+───────────────────────────────────────── */
+.lang-select {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  color: #d1d5db;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.lang-select:focus {
+  outline: none;
+  border-color: #4b5563;
+}
+
+.app-container.dark .lang-select {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+/* ─────────────────────────────────────────
+   Delete button
+───────────────────────────────────────── */
+.delete-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background: none;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.delete-btn:hover {
+  background-color: #fef2f2;
+}
+
+/* Larger variant used on the detail page */
+.delete-btn-detail {
+  margin-top: 20px;
+  font-size: 13px;
+  padding: 6px 16px;
+}
+
+.app-container.dark .delete-btn {
+  border-color: #7f1d1d;
+  color: #f87171;
+}
+
+.app-container.dark .delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.08);
+}

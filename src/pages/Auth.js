@@ -5,7 +5,7 @@ import { AppContext } from '../App';
 const UNIVERSITIES = ['UTC Compiègne', 'Sorbonne', 'Université de Lille'];
 
 function Auth() {
-  const { setUser } = useContext(AppContext);
+  const { setUser, t } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [university, setUniversity] = useState('');
@@ -16,7 +16,7 @@ function Auth() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!university || !username || !password) {
-      setError('Please fill in all fields.');
+      setError(t.fillAllFields);
       return;
     }
     const user = { university, username };
@@ -27,15 +27,15 @@ function Auth() {
 
   return (
     <div className="auth-container">
-      <h1 className="auth-title">Student Market</h1>
-      <p className="auth-subtitle">Buy &amp; sell in your student city.</p>
+      <h1 className="auth-title">{t.appName}</h1>
+      <p className="auth-subtitle">{t.subtitle}</p>
       <form onSubmit={handleSubmit}>
         <select
           className="input"
           value={university}
           onChange={(e) => setUniversity(e.target.value)}
         >
-          <option value="">Select university</option>
+          <option value="">{t.selectUniversity}</option>
           {UNIVERSITIES.map((u) => (
             <option key={u} value={u}>{u}</option>
           ))}
@@ -44,7 +44,7 @@ function Auth() {
         <input
           className="input"
           type="text"
-          placeholder="Username"
+          placeholder={t.usernamePlaceholder}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -52,7 +52,7 @@ function Auth() {
         <input
           className="input"
           type="password"
-          placeholder="Password"
+          placeholder={t.passwordPlaceholder}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -60,7 +60,7 @@ function Auth() {
         {error && <p className="auth-error">{error}</p>}
 
         <button className="button-primary" type="submit">
-          Continue
+          {t.continue}
         </button>
       </form>
     </div>

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import SellItem from './pages/SellItem';
 import ProductDetail from './pages/ProductDetail';
 import Layout from './components/Layout';
+import TRANSLATIONS from './i18n';
 
 export const AppContext = React.createContext(null);
 
@@ -31,14 +32,27 @@ function App() {
     return localStorage.getItem('studentMarketTheme') || 'light';
   });
 
+  const [lang, setLang] = useState(() => {
+    return localStorage.getItem('studentMarketLanguage') || 'en';
+  });
+
   function toggleTheme() {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
     localStorage.setItem('studentMarketTheme', next);
   }
 
+  function changeLang(newLang) {
+    setLang(newLang);
+    localStorage.setItem('studentMarketLanguage', newLang);
+  }
+
+  const t = TRANSLATIONS[lang];
+
   return (
-    <AppContext.Provider value={{ user, setUser, products, setProducts, theme, toggleTheme }}>
+    <AppContext.Provider
+      value={{ user, setUser, products, setProducts, theme, toggleTheme, lang, changeLang, t }}
+    >
       <div className={`app-container ${theme}`}>
         <Routes>
           <Route

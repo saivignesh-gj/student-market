@@ -1,13 +1,20 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../App';
 import ProductCard from '../components/ProductCard';
+import { CATEGORY_KEYS } from '../i18n';
 
-const CATEGORIES = ['All', 'Furniture', 'Electronics', 'Books', 'Other'];
+const CATEGORY_VALUES = ['All', 'Furniture', 'Electronics', 'Books', 'Other'];
 
 function Home() {
-  const { products } = useContext(AppContext);
+  const { products, setProducts, t } = useContext(AppContext);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+
+  function handleDelete(productId) {
+    const updated = products.filter((p) => p.id !== productId);
+    setProducts(updated);
+    localStorage.setItem('studentMarketListings', JSON.stringify(updated));
+  }
 
   const sorted = [...products].sort((a, b) => b.createdAt - a.createdAt);
 
@@ -30,29 +37,33 @@ function Home() {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          {CATEGORIES.map((c) => (
+          {CATEGORY_VALUES.map((c) => (
             <option key={c} value={c}>
-              {c === 'All' ? 'All categories' : c}
+              {t[CATEGORY_KEYS[c]]}
             </option>
           ))}
         </select>
         <input
           className="input filter-search"
           type="text"
-          placeholder="Search listings..."
+          placeholder={t.searchPlaceholder}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {products.length === 0 ? (
-        <p className="empty-state">No listings yet. Be the first to sell something!</p>
+        <p className="empty-state">{t.emptyState}</p>
       ) : filtered.length === 0 ? (
-        <p className="empty-state">No listings match your search.</p>
+        <p className="empty-state">{t.noResults}</p>
       ) : (
         <div className="listings-grid">
           {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       )}
